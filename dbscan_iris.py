@@ -53,17 +53,17 @@ class DBSCANAnalysis:
         print(f"  - Nombre de caractéristiques: {self.X.shape[1]}")
         print(f"  - Classes réelles: {len(self.target_names)} ({', '.join(self.target_names)})")
         
-        print("\ Description du dataset:")
+        print("\n Description du dataset:")
         print("   Le dataset Iris contient des mesures de fleurs d'iris.")
         print("   Il s'agit d'un dataset classique en machine learning.")
         
-        print("\ Aperçu des données:")
+        print("\n Aperçu des données:")
         print(self.data.head(10))
         
-        print("\ Statistiques descriptives:")
+        print("\n Statistiques descriptives:")
         print(self.data[self.feature_names].describe())
         
-        print("\ Distribution par espèce:")
+        print("\n Distribution par espèce:")
         print(self.data['species'].value_counts())
         
         return self.data
@@ -74,11 +74,11 @@ class DBSCANAnalysis:
         print("2. PRÉTRAITEMENT DES DONNÉES")
         print("="*70)
         
-        print("\ Statistiques AVANT normalisation:")
+        print("\n Statistiques AVANT normalisation:")
         print(self.data[self.feature_names].describe().loc[['mean', 'std']])
         
         # Normalisation
-        print("\  Normalisation avec StandardScaler...")
+        print("\n Normalisation avec StandardScaler...")
         scaler = StandardScaler()
         self.X_scaled = scaler.fit_transform(self.X)
         
@@ -86,7 +86,7 @@ class DBSCANAnalysis:
         print(f"  - Toutes les caractéristiques sont maintenant centrées (moyenne=0)")
         print(f"  - Toutes les caractéristiques ont un écart-type de 1")
         
-        print("\ Statistiques APRÈS normalisation:")
+        print("\n Statistiques APRÈS normalisation:")
         data_scaled = pd.DataFrame(self.X_scaled, columns=self.feature_names)
         print(data_scaled.describe().loc[['mean', 'std']])
         
@@ -265,8 +265,7 @@ class DBSCANAnalysis:
         ax3.grid(True, alpha=0.3)
         
         plt.tight_layout()
-        plt.savefig('iris_clustering_results.png', dpi=300, bbox_inches='tight')
-        print("\n  ✓ Graphique sauvegardé: iris_clustering_results.png")
+        print("\n Graphique affiché: iris_clustering_results.png")
         plt.show()
         
         # Distribution des points par cluster
@@ -291,8 +290,7 @@ class DBSCANAnalysis:
                    ha='center', va='bottom', fontsize=12, fontweight='bold')
         
         plt.tight_layout()
-        plt.savefig('iris_cluster_distribution.png', dpi=300, bbox_inches='tight')
-        print("  ✓ Graphique sauvegardé: iris_cluster_distribution.png")
+        print(" Graphique affiché: iris_cluster_distribution.png")
         plt.show()
         
         # Matrice de confusion entre clusters DBSCAN et classes réelles
@@ -420,13 +418,6 @@ def main():
     print("   • iris_k_distance_plot.png")
     print("   • iris_clustering_results.png")
     print("   • iris_cluster_distribution.png")
-    print("\n💡 Le dataset Iris est différent du Wine dataset:")
-    print("   - 150 échantillons (vs 178)")
-    print("   - 4 caractéristiques (vs 13)")
-    print("   - 3 espèces de fleurs (Setosa, Versicolor, Virginica)")
-    print("   - Données morphologiques de fleurs (vs données chimiques de vin)")
-    print("\n" + "="*70 + "\n")
-
 
 if __name__ == "__main__":
     main()
