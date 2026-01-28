@@ -48,22 +48,22 @@ class DBSCANAnalysis:
         self.data['true_class'] = y_true
         self.data['species'] = [self.target_names[i] for i in y_true]
         
-        print(f"\n✓ Dataset Iris chargé avec succès")
+        print(f"\n Dataset Iris chargé avec succès")
         print(f"  - Nombre d'échantillons: {self.X.shape[0]}")
         print(f"  - Nombre de caractéristiques: {self.X.shape[1]}")
         print(f"  - Classes réelles: {len(self.target_names)} ({', '.join(self.target_names)})")
         
-        print("\n📊 Description du dataset:")
+        print("\ Description du dataset:")
         print("   Le dataset Iris contient des mesures de fleurs d'iris.")
         print("   Il s'agit d'un dataset classique en machine learning.")
         
-        print("\n📈 Aperçu des données:")
+        print("\ Aperçu des données:")
         print(self.data.head(10))
         
-        print("\n📊 Statistiques descriptives:")
+        print("\ Statistiques descriptives:")
         print(self.data[self.feature_names].describe())
         
-        print("\n📊 Distribution par espèce:")
+        print("\ Distribution par espèce:")
         print(self.data['species'].value_counts())
         
         return self.data
@@ -74,19 +74,19 @@ class DBSCANAnalysis:
         print("2. PRÉTRAITEMENT DES DONNÉES")
         print("="*70)
         
-        print("\n📊 Statistiques AVANT normalisation:")
+        print("\ Statistiques AVANT normalisation:")
         print(self.data[self.feature_names].describe().loc[['mean', 'std']])
         
         # Normalisation
-        print("\n⚙️  Normalisation avec StandardScaler...")
+        print("\  Normalisation avec StandardScaler...")
         scaler = StandardScaler()
         self.X_scaled = scaler.fit_transform(self.X)
         
-        print(f"\n✓ Prétraitement terminé")
+        print(f"\n Prétraitement terminé")
         print(f"  - Toutes les caractéristiques sont maintenant centrées (moyenne=0)")
         print(f"  - Toutes les caractéristiques ont un écart-type de 1")
         
-        print("\n📊 Statistiques APRÈS normalisation:")
+        print("\ Statistiques APRÈS normalisation:")
         data_scaled = pd.DataFrame(self.X_scaled, columns=self.feature_names)
         print(data_scaled.describe().loc[['mean', 'std']])
         
@@ -98,7 +98,7 @@ class DBSCANAnalysis:
         print("3. DÉTERMINATION DES PARAMÈTRES")
         print("="*70)
         
-        print("\n🔍 Recherche d'epsilon optimal avec la méthode k-distance...")
+        print("\n Recherche d'epsilon optimal avec la méthode k-distance...")
         
         # Calculer les k-distances (k=4 par défaut)
         k = 4
@@ -121,8 +121,7 @@ class DBSCANAnalysis:
                    label='Epsilon suggéré = 0.5')
         plt.legend(fontsize=11)
         plt.tight_layout()
-        plt.savefig('iris_k_distance_plot.png', dpi=300, bbox_inches='tight')
-        print("  ✓ Graphique sauvegardé: iris_k_distance_plot.png")
+        print(" Graphique affiché: iris_k_distance_plot.png")
         plt.show()
         
         # Epsilon suggéré (observé sur le graphique du coude)
@@ -141,7 +140,7 @@ class DBSCANAnalysis:
         print("4. APPLICATION DE DBSCAN")
         print("="*70)
         
-        print(f"\n⚙️  Configuration du modèle:")
+        print(f"\n Configuration du modèle:")
         print(f"  - eps = {eps}")
         print(f"  - min_samples = {min_samples}")
         
@@ -156,12 +155,12 @@ class DBSCANAnalysis:
         # Distribution des clusters
         unique, counts = np.unique(self.labels, return_counts=True)
         
-        print(f"\n✓ Clustering terminé!")
-        print(f"\n📊 Résultats:")
+        print(f"\n Clustering terminé!")
+        print(f"\n Résultats:")
         print(f"  - Nombre de clusters détectés: {n_clusters}")
         print(f"  - Points de bruit (outliers): {n_noise} ({n_noise/len(self.labels)*100:.1f}%)")
         
-        print(f"\n📈 Distribution des points:")
+        print(f"\n Distribution des points:")
         for label, count in zip(unique, counts):
             if label == -1:
                 print(f"  - Bruit: {count} points")
@@ -181,7 +180,7 @@ class DBSCANAnalysis:
         X_no_noise = self.X_scaled[mask]
         labels_no_noise = self.labels[mask]
         
-        print("\n📊 Métriques de qualité du clustering:")
+        print("\n Métriques de qualité du clustering:")
         
         if len(set(labels_no_noise)) > 1:
             silhouette = silhouette_score(X_no_noise, labels_no_noise)
@@ -192,7 +191,7 @@ class DBSCANAnalysis:
             print(f"  - Davies-Bouldin Index: {davies_bouldin:.3f} (plus faible = meilleur)")
             print(f"  - Calinski-Harabasz Score: {calinski_harabasz:.2f} (plus élevé = meilleur)")
         else:
-            print("  ⚠️  Pas assez de clusters pour calculer les métriques")
+            print("  Pas assez de clusters pour calculer les métriques")
         
         # Visualisation 2D - Utiliser les 2 caractéristiques les plus importantes
         # Sepal length vs Sepal width et Petal length vs Petal width
@@ -297,7 +296,7 @@ class DBSCANAnalysis:
         plt.show()
         
         # Matrice de confusion entre clusters DBSCAN et classes réelles
-        print("\n📊 Comparaison DBSCAN vs Classes Réelles:")
+        print("\n Comparaison DBSCAN vs Classes Réelles:")
         comparison = pd.crosstab(
             pd.Series(self.labels, name='Cluster DBSCAN'),
             pd.Series(self.data['species'], name='Espèce Réelle')
@@ -310,7 +309,7 @@ class DBSCANAnalysis:
         print("6. INTERPRÉTATION DES RÉSULTATS")
         print("="*70)
         
-        print("\n🔍 Analyse détaillée des clusters:\n")
+        print("\n Analyse détaillée des clusters:\n")
         
         # Analyser les caractéristiques de chaque cluster
         for cluster_id in sorted(set(self.labels)):
@@ -320,7 +319,7 @@ class DBSCANAnalysis:
             mask = self.labels == cluster_id
             cluster_data = self.data[mask]
             
-            print(f"📌 Cluster {cluster_id}:")
+            print(f" Cluster {cluster_id}:")
             print(f"   Taille: {mask.sum()} échantillons ({mask.sum()/len(self.labels)*100:.1f}%)")
             
             # Statistiques moyennes
@@ -340,7 +339,7 @@ class DBSCANAnalysis:
         noise_mask = self.labels == -1
         n_noise = noise_mask.sum()
         if n_noise > 0:
-            print(f"⚠️  Points de Bruit (Outliers):")
+            print(f" Points de Bruit (Outliers):")
             print(f"   - Nombre: {n_noise}")
             print(f"   - Pourcentage: {n_noise/len(self.labels)*100:.1f}%")
             
@@ -352,7 +351,7 @@ class DBSCANAnalysis:
             print()
         
         # Observations sur la qualité du clustering
-        print("💡 Observations:")
+        print(" Observations:")
         
         # Calculer la pureté de chaque cluster
         for cluster_id in sorted(set(self.labels)):
@@ -366,7 +365,7 @@ class DBSCANAnalysis:
             
             print(f"   • Cluster {cluster_id}: Dominé par '{dominant_species}' (pureté: {purity:.1%})")
         
-        print("\n✅ Avantages de DBSCAN observés:")
+        print("\n Avantages de DBSCAN observés:")
         advantages = [
             "Détection automatique du nombre de clusters",
             "Identification des outliers (points de bruit)",
@@ -376,7 +375,7 @@ class DBSCANAnalysis:
         for adv in advantages:
             print(f"   • {adv}")
         
-        print("\n⚠️  Limitations observées:")
+        print("\n Limitations observées:")
         limitations = [
             "Sensible au choix des paramètres (eps, min_samples)",
             "Performance variable selon la densité des clusters",
